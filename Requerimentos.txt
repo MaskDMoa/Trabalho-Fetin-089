@@ -1,9 +1,0 @@
-## Requisitos técnicos
-
-- Wazuh Manager instalado
-- Acesso ao arquivo `/var/ossec/logs/alerts/alerts.json`
-- Python 3
-- Permissões de administrador (para bloquear IP com iptables)
-
-## Bibliotecas Python
-- Nenhuma externa (apenas built-in) até o momento
