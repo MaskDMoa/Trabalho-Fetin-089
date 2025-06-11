@@ -7,6 +7,23 @@ Este projeto monitora os alertas gerados pelo SIEM Wazuh em tempo real e executa
 - Ações automáticas como bloqueio de IP
 - Registro de incidentes
 
-## Como executar
+# Instalação do Wazuh com Docker
+
+Este projeto utiliza a imagem oficial do Wazuh para criar um ambiente de SIEM local.
+
+## Componentes
+- wazuh/wazuh-manager
+- wazuh/wazuh-indexer
+- wazuh/wazuh-dashboard
+
+## Guia oficial (referência)
+- [Documentação Wazuh - Docker] (https://documentation.wazuh.com/current/deployment-options/docker/index.html)
+- [Repositório oficial no Github] (https://github.com/wazuh/wazuh-docker)
+
+## Etapas básicas
+1. Instalar Docker Desktop
+2. Clonar o repositório
+3. Executar `docker-compose up -d`
+4. Acessar o painel em `http://localhost:5601`
 
 
