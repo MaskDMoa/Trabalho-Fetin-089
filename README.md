@@ -24,6 +24,6 @@ Este projeto utiliza a imagem oficial do Wazuh para criar um ambiente de SIEM lo
 1. Instalar Docker Desktop
 2. Clonar o repositório
 3. Executar `docker-compose up -d`
-4. Acessar o painel em `http://localhost:5601`
+4. Acessar o painel em `http://localhost`
 
 
