@@ -1,5 +1,8 @@
 import json
-import os
+import time
+
+# Caminho do arquivo de alertas do Wazuh
+LOG_FILE = "/var/ossec/logs/alerts/alerts.json"
 
 # Função de classificação
 def classificar_alerta(nivel):
@@ -20,25 +23,35 @@ def classificar_alerta(nivel):
     else:
         return "Nível inválido"
 
-# Função para processar vários arquivos
-def processar_alertas(pasta_json):
-    for arquivo in os.listdir(pasta_json):
-        if arquivo.endswith('.json'):
-            caminho = os.path.join(pasta_json, arquivo)
-            with open(caminho, 'r', encoding='utf-8') as f:
-                try:
-                    alerta = json.load(f)
-                    nivel = alerta.get('rule', {}).get('level', -1)
-                    classificacao = classificar_alerta(nivel)
-                    print(f"Arquivo: {arquivo}")
-                    print(f"→ IP: {alerta.get('srcip')}")
-                    print(f"→ Nível: {nivel}")
-                    print(f"→ Classificação: {classificacao}")
-                    print(f"→ Descrição: {alerta.get('rule', {}).get('description')}")
-                    print('-' * 40)
-                except json.JSONDecodeError:
-                    print(f"Erro ao ler {arquivo}: JSON inválido.")
+# Função para monitorar o arquivo em tempo real
+def monitorar_alertas():
+    print(" Monitorando alertas em tempo real... (Ctrl+C para parar)")
+    try:
+        with open(LOG_FILE, "r", encoding="utf-8") as f:
+            f.seek(0, 2)  # Vai para o final do arquivo
+            while True:
+                line = f.readline()
+                if line:
+                    try:
+                        alerta = json.loads(line.strip())
+                        rule = alerta.get("rule", {})
+                        nivel = rule.get("level", -1)
+                        classificacao = classificar_alerta(nivel)
 
+                        ip = alerta.get("srcip") or alerta.get("agent", {}).get("ip", "N/A")
+                        descricao = rule.get("description", "Sem descrição")
 
-# Lendo e classificando todos os arquivos da pasta
-processar_alertas('Exemplos')
+                        print(f"→ IP: {ip}")
+                        print(f"→ Nível: {nivel} ({classificacao})")
+                        print(f"→ Descrição: {descricao}")
+                        print('-' * 50)
+
+                    except json.JSONDecodeError:
+                        print("⚠️ Linha inválida (ignorada).")
+                else:
+                    time.sleep(1)  # Evita 100% CPU quando não tem nada novo
+    except KeyboardInterrupt:
+        print("\n Monitoramento encerrado.")
+
+if __name__ == "__main__":
+    monitorar_alertas()
