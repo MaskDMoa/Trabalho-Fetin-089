@@ -1,5 +1,6 @@
 #programa usado para fazer os requests e lugar que os ips são banidos
-  GNU nano 7.2                                                               app.py                                                                         from flask import Flask, request, abort
+#comando utilizado (Invoke-WebRequest -Method POST -Uri http://127.0.0.1:5000/login -Body "user=admin&password=errado")                                                                     
+from flask import Flask, request, abort
 import logging, os, json, threading, time
 
 app = Flask(__name__)
